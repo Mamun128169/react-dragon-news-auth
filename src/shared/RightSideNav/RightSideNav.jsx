@@ -3,16 +3,32 @@ import { FaGithub } from 'react-icons/fa'
 import swim from '../../assets/qZone1.png'
 import classRoom from '../../assets/qZone2.png'
 import playGround from '../../assets/qZone3.png'
+import { useContext } from 'react'
+import { AuthContext } from '../../context/AuthProvider'
 
-const rightSideNav = () => {
+const RightSideNav = () => {
+  const { signInWithGoogle } = useContext(AuthContext)
+
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle()
+      .then((user) => {
+        console.log(user)
+      })
+      .catch((error) => {
+        console.error(error.message)
+      })
+  }
+
   return (
     <div>
       {/* logIN with social icons */}
       <div className="">
         <h2 className="text-xl font-semibold mb-5">Login With</h2>
-        <div className="border-2 flex items-center gap-2 px-5 py-2 justify-center mb-3 rounded-md font-semibold  hover:text-sky-800 cursor-pointer">
-          <FaGoogle />
-          <h3 className="text-sm">Login with Google</h3>
+        <div onClick={handleSignInWithGoogle}>
+          <div className="border-2 flex items-center gap-2 px-5 py-2 justify-center mb-3 rounded-md font-semibold  hover:text-sky-800 cursor-pointer">
+            <FaGoogle />
+            <h3 className="text-sm">Login with Google</h3>
+          </div>
         </div>
         <div className="border-2 flex items-center gap-2 px-5 py-2 justify-center mb-4 rounded-md font-semibold  hover:text-sky-800 cursor-pointer">
           <FaGithub />
@@ -49,4 +65,4 @@ const rightSideNav = () => {
     </div>
   )
 }
-export default rightSideNav
+export default RightSideNav

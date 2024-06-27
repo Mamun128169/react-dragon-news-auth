@@ -4,23 +4,27 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
+  GoogleAuthProvider,
 } from 'firebase/auth'
 import auth from '../firebase/firebase.config'
 
 export const AuthContext = createContext(null)
 
+const googleProvider = new GoogleAuthProvider()
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  //create user with email and password
+  // Create user with email and password
   const createUser = (email, password) => {
     setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password)
   }
 
-  //get currently singed user
+  // Get currently signed user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
@@ -28,22 +32,37 @@ const AuthProvider = ({ children }) => {
       console.log(currentUser)
     })
 
-    //clean up function
+    // Cleanup function
     return () => {
       unsubscribe()
     }
   }, [])
 
-  //sign in with email and password
+  // Sign in with email and password
   const signInUser = (email, password) => {
     setLoading(true)
     return signInWithEmailAndPassword(auth, email, password)
   }
 
-  //sign out the current user
+  // Sign out the current user
   const signOutUser = () => {
     setLoading(true)
     return signOut(auth)
+  }
+
+  // Sign in with Google
+  const signInWithGoogle = () => {
+    setLoading(true)
+    return signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        setLoading(false)
+        return result.user
+      })
+      .catch((error) => {
+        setLoading(false)
+        console.error(error.message)
+        throw error
+      })
   }
 
   const contextValue = {
@@ -52,6 +71,7 @@ const AuthProvider = ({ children }) => {
     createUser,
     signInUser,
     signOutUser,
+    signInWithGoogle,
   }
 
   return (

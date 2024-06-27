@@ -4,7 +4,17 @@ import { useContext } from 'react'
 import { AuthContext } from '../../context/AuthProvider'
 
 const Navbar = () => {
-  const { user, signOutUser } = useContext(AuthContext)
+  const { user, loading, signOutUser } = useContext(AuthContext)
+  // console.log(user.photoURL)
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-bars h-[100px] w-[100px]"></span>
+        {/* <h2 className="text-7xl">loading.....</h2> */}
+      </div>
+    )
+  }
 
   const navLinks = (
     <>
@@ -19,6 +29,9 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to={'/logIn'}>LogIn</NavLink>
+      </li>
+      <li>
+        <NavLink to={'/register'}>Register</NavLink>
       </li>
     </>
   )
@@ -63,8 +76,10 @@ const Navbar = () => {
         <div className="w-10 rounded-full">
           <img
             className="rounded-full"
-            alt="Tailwind CSS Navbar component"
-            src={defaultImage}
+            alt="User Avatar"
+            // src={user?.photoURL || defaultImage}
+            src={user && user.photoURL ? user.photoURL : defaultImage}
+            // src={defaultImage}
           />
         </div>
         {user ? (

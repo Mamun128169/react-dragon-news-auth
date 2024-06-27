@@ -32,7 +32,7 @@ const NewsDetails = () => {
                 <p className="font-medium text-gray-700 text-justify">
                   {details}
                 </p>
-                <div onClick={() => navigate(-1)}>
+                <div onClick={() => navigate('/')}>
                   <button className="border bg-pink-600 hover:bg-pink-700 text-white font-medium px-3 py-2">
                     All news in this category
                   </button>

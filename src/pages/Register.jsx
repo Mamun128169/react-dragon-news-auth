@@ -4,6 +4,8 @@ import { FaEye } from 'react-icons/fa'
 import { FaEyeSlash } from 'react-icons/fa'
 import { AuthContext } from '../context/AuthProvider'
 import { useNavigate } from 'react-router-dom'
+import { updateProfile } from 'firebase/auth'
+import auth from '../firebase/firebase.config'
 
 const Register = () => {
   const [showPass, setShowPass] = useState(false)
@@ -24,6 +26,13 @@ const Register = () => {
     createUser(email, password)
       .then((result) => {
         console.log(result)
+
+        // update user's profile
+        updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: 'https://i.postimg.cc/657csZwR/1691212264.png',
+        })
+
         navigate('/')
       })
       .catch((err) => {
