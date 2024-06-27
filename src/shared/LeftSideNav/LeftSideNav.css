@@ -1,0 +1,6 @@
+.selected {
+  background-color: rgba(216, 205, 205, 0.815);
+  color: black;
+  font-weight: 600;
+  border-radius: 2px;
+}
